@@ -10,4 +10,29 @@ module.exports = class Page {
     open(path) {
         return browser.url(`https://www.saucedemo.com/${path}`)
     }
+
+    get secondaryTitle() {
+        return $('.title')
+    }
+
+    get shoppingCartLink() {
+        return $('.shopping_cart_link')
+    }
+
+    async setLoginCookie(){
+        browser.addCookie( { 'session-username': 'standard_user'})
+    }
+
+    async setCartContents(itemIds)
+    {
+        await browser.executeScript("localStorage.setItem(arguments[0], arguments[1])", ['cart-contents', itemIds]);
+    }
+
+    async getCartContentsLength()
+    {
+        let cart = await browser.executeScript("localStorage.getItem('cart-contents')");
+        console.log('******************************************');
+        console.log(cart)
+        return cart.length //should be an array
+    }
 }
